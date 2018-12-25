@@ -5,8 +5,8 @@
       <img src="#" alt="">
     </div>
     <!-- 列表数据 -->
-    <div class="postWrapper">
-      <ul>
+    <div class="postWrapper" v-else>
+      <ul class="posts">
         <li class="tab">
           <span class="tapAll">全部</span>
           <span class="tapGood">精华</span>
@@ -25,7 +25,14 @@
           {topicTab: (post.good !== true && post.top !== true)}]">
             <span>{{post | formatTab}}</span>
           </span>
-          <span class="title">{{post.title}}</span>
+          <router-link :to = "{
+            name: 'post-content',
+            params: {
+              id: post.id
+            }
+          }">
+            <span class="title">{{post.title}}</span>
+          </router-link>
           <span class="time">{{post.last_reply_at | formatDate}}</span>
         </li>
       </ul>
@@ -64,25 +71,25 @@ export default {
 }
 </script>
 
-<style <style scoped>
-  ul,li{
+<style scoped>
+  ul.posts,li{
     list-style: none;
   }
-  ul{
-    margin-top: 20px;
+  ul.posts{
+    margin: 20px 0;
     background: #fff;
     box-shadow: 0 0px 14px rgba(0,0,0,0.06);
   }
-  li:not(:first-child){
+  ul.posts li:not(:first-child){
     padding: 10px 20px 10px 20px;
     border-top: 1px solid #f0f0f0;
     display: flex;
     align-items: center;
   }
-  li:not(:first-child):hover{
+  ul.posts li:not(:first-child):hover{
     background: #fbfbfb;
   }
-  li:first-child{
+  ul.posts li:first-child{
     padding: 16px 20px 16px 20px;
     background: #fbfbfb;
     color: #80bd01;
@@ -146,11 +153,13 @@ export default {
     border-radius: 2px;
     margin-right: 10px;
   }
-  .title{
+  .posts .title{
     max-width: 70%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-size: 15px;
+    font-weight: unset;
   }
   .time{
     flex: 1;
@@ -158,5 +167,15 @@ export default {
     display: inline-block;
     color: #778087;
     font-size: 11px;
+  }
+  a{
+  text-decoration: none;
+  color: #08c;
+  }
+  a:hover{
+    text-decoration: underline;
+  }
+  a:visited{
+    color: #888;
   }
 </style>
