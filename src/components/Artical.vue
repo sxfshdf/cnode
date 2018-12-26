@@ -32,12 +32,28 @@
       <div>
         <div v-for="(reply, index) in post.replies" :key="index" class="replyContent">
           <div class="replyItem">
-            <img :src="reply.author.avatar_url" alt class="replyAvatar">
+            <router-link :to="{
+              name: 'user-info',
+              params: {
+                name: reply.author.loginname
+              }
+            }">
+              <img :src="reply.author.avatar_url" alt class="replyAvatar">
+            </router-link>
             <div class="replyer">
-              <span class="replyAuthor">{{reply.author.loginname}}</span>
+              <router-link :to="{
+                name: 'user-info',
+                params: {
+                  name: reply.author.loginname
+                }
+              }">
+                <span class="replyAuthor">{{reply.author.loginname}}</span>
+              </router-link>
               <p v-html="reply.content" class="comment"></p>
               <div class="ups">
-                <span class="replyTime">{{index + 1}}楼&nbsp;&nbsp;|&nbsp;&nbsp;{{reply.create_at | formatDate}}</span>
+                <span
+                  class="replyTime"
+                >{{index + 1}}楼&nbsp;&nbsp;|&nbsp;&nbsp;{{reply.create_at | formatDate}}</span>
                 <span v-if="reply.ups.length > 0">
                   <i class="far fa-thumbs-up up-btn"></i>
                   {{reply.ups.length}}
@@ -70,7 +86,6 @@ export default {
           if (response.data.success === true) {
             this.isLoading = false;
             this.post = response.data.data;
-            console.log(this.post.replies);
           }
         });
     }
@@ -78,6 +93,11 @@ export default {
   beforeMount() {
     this.isLoading = true;
     this.getArtical();
+  },
+  watch:{
+    '$route'(to,from){
+      this.getArtical()
+    }
   }
 };
 </script>
@@ -89,8 +109,8 @@ ul.articalInfo {
   color: #333;
 }
 .artical {
-  width: 90%;
-  margin: 20px auto 0;
+  margin-right: 20px;
+  flex: 1;
 }
 .articalWrapper {
   background: #fff;
@@ -118,7 +138,8 @@ ul.articalInfo li span {
   color: #80bd01;
 }
 .markdown-text img {
-  width: 100% !important;
+  max-width: 100% !important;
+  height: auto;
 }
 .articalWrapper .content {
   padding: 0 20px 20px 20px;
@@ -137,10 +158,14 @@ ul.articalInfo li span {
   padding: 20px 0 10px;
   border-bottom: 1px solid #e5e5e5;
 }
-.markdown-text ul {
+.markdown-text ul{
   padding: 0;
   margin: 0 0 10px 25px;
   list-style-type: disc;
+}
+.markdown-text ol{
+  padding: 0;
+  margin: 0 0 10px 25px;
 }
 .markdown-text li {
   font-size: 14px;
@@ -164,7 +189,7 @@ a:visited {
 }
 .artical .replyTop {
   font-size: 14px;
-  color: #333;
+  color: #80bd01;
   padding: 16px 20px;
   background: #fbfbfb;
 }
@@ -173,12 +198,12 @@ a:visited {
   padding: 20px 20px 10px 20px;
   border-bottom: 1px solid #f0f0f0;
 }
-.replyContent img {
+.replyContent img.replyAvatar {
   width: 30px;
   height: 30px;
   border-radius: 2px;
 }
-.replyContent .replyItem{
+.replyContent .replyItem {
   display: flex;
 }
 .replyContent .replyer {
@@ -192,14 +217,14 @@ a:visited {
   font-weight: 700;
   color: #666;
 }
-.replyContent .ups{
+.replyContent .ups {
   font-size: 14px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   color: #666;
 }
-.replyContent .up-btn{
+.replyContent .up-btn {
   font-size: 14px;
   color: #000;
   opacity: 0.4;
@@ -208,8 +233,7 @@ a:visited {
   font-size: 11px;
   color: #999;
 }
-.replyContent .markdown-text p{
+.replyContent .markdown-text p {
   margin: 10px 0;
 }
-
 </style>
