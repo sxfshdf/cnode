@@ -15,6 +15,12 @@ export default new Router({
       main: PostList
     }
   },{
+    name: 'post-list',
+    path: '/?tab=:tab',
+    components: {
+      main: PostList
+    }
+  },{
     name: 'post-content',
     path: '/topic/:id&author=:name',
     components: {

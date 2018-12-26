@@ -8,11 +8,18 @@
     <div class="postWrapper" v-else>
       <ul class="posts">
         <li class="tab">
-          <span class="tapAll">全部</span>
-          <span class="tapGood">精华</span>
-          <span class="tapShare">分享</span>
-          <span class="tapAsk">问答</span>
-          <span class="tapJob">招聘</span>
+          <span v-for="(tab,key) in tabs" :key="key"
+                :class="[{currentTab:currentTab === tab.tabName}]"
+                @click="changeTab(tab.tabName)"
+                >
+                <router-link :to="{
+                  name: 'post-list',
+                  params: {
+                    tab: tab.tab
+                  }
+                }">
+                   {{tab.tabName}}
+                </router-link></span>
         </li>
         <li v-for="(post, key) in posts" :key="key">
           <img :src="post.author.avatar_url">
@@ -43,7 +50,7 @@
           <span class="time">{{post.last_reply_at | formatDate}}</span>
         </li>
         <li>
-          <pagination @change="renderList"></pagination>
+          <pagination ref="page" @change="renderList"></pagination>
         </li>
       </ul>
     </div>
@@ -52,22 +59,30 @@
 
 <script>
 import pagination from './Pagination'
+import posttab from './PostTab'
 export default {
   name: "PostList",
   data() {
     return {
       isLoading: false,
       posts: [],
-      postPage: 1
+      postPage: 1,
+      currentTab: '全部',
+      tab: 'all',
+      tabs: [{tabName:'全部',tab:'all'},
+             {tabName:'精华',tab:'good'},
+             {tabName:'分享',tab:'share'},
+             {tabName:'问答',tab:'ask'},
+             {tabName:'招聘',tab:'job'},]
     };
   },
   components: {
-    pagination
+    pagination,
   },
   methods: {
     getData() {
       this.$http
-        .get("https://cnodejs.org/api/v1/topics", {
+        .get(`https://cnodejs.org/api/v1/topics?tab=${this.tab}`, {
           params: {
             page: this.postPage,
             limit: 20
@@ -81,11 +96,26 @@ export default {
     renderList(page){
       this.postPage = page
       this.getData()
+    },
+    changeTab(tab){
+      this.currentTab = tab
     }
   },
   beforeMount() {
     this.isLoading = true; // 加载成功之前加载loading
     this.getData(); // 获取数据
+  },
+  watch:{
+    '$route'(to,from){
+      if (to.params && to.params.tab) {
+        this.tab = to.params.tab;
+        this.posts = [];
+      }
+      this.getData()
+      console.log(1)
+      this.$refs.page.firstPage()
+      console.log(2)
+    }
   }
 };
 </script>
@@ -97,6 +127,31 @@ export default {
 ul.posts,
 li {
   list-style: none;
+}
+ul.posts .tab span {
+  padding: 4px 8px;
+  border-radius: 2px;
+  margin-right: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-block;
+}
+ul.posts .tab span.currentTab {
+  background: #80bd01;
+  color: #fff;
+}
+ul.posts .tab span.currentTab a{
+  color: #fff;
+}
+ul.posts .tab a:hover{
+  text-decoration: none;
+}
+ul.posts .tab a:visited{
+  text-decoration: none;
+}
+ul.posts .tab a{
+  text-decoration: none;
+  color: #80bd01;
 }
 ul.posts {
   background: #fff;
@@ -118,16 +173,6 @@ ul.posts li:first-child {
   padding: 16px 20px 16px 20px;
   background: #fbfbfb;
   color: #80bd01;
-}
-.tab > span {
-  padding: 4px 8px;
-  border-radius: 2px;
-  margin-right: 10px;
-  font-size: 15px;
-}
-span.tapAll {
-  background: #80bd01;
-  color: #fff;
 }
 img {
   width: 32px;
