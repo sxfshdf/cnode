@@ -59,7 +59,6 @@ export default {
   methods: {
     getUserInfo() {
       if (localStorage.userInfo) {
-        console.log(1)
         let loginname = JSON.parse(localStorage.userInfo).loginname;
         this.$http
           .get(`https://cnodejs.org/api/v1/user/${loginname}`)

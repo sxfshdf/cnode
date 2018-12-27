@@ -62,11 +62,11 @@
                 <span
                   class="replyTime"
                 >{{index + 1}}楼&nbsp;&nbsp;|&nbsp;&nbsp;{{reply.create_at | formatDate}}</span>
-                <span v-if="reply.ups.length > 0">
-                  <i class="far fa-thumbs-up up-btn"></i>
+                <span>
+                  <i class='far fa-thumbs-up up-btn' @click="up(reply.id,$event)"></i>
                   {{reply.ups.length}}
                 </span>
-                <span v-else></span>
+                <!-- <span v-else></span> -->
               </div>
             </div>
           </div>
@@ -77,12 +77,16 @@
 </template>
 
 <script>
+import qs from 'qs'
+import $ from 'jquery'
+
 export default {
   name: "Artical",
   data() {
     return {
       isLoading: false,
-      post: {} //当前文章页的所有内容
+      post: {} ,//当前文章页的所有内容
+      isActive: false
     };
   },
   components: {},
@@ -93,18 +97,31 @@ export default {
         .then(response => {
           if (response.data.success === true) {
             this.isLoading = false;
-            this.post = response.data.data;
-            console.log('-----333')
-            console.log(this.post.replies.length)
+            this.post = response.data.data
           }
         });
+    },
+    up(id,event){
+      if(localStorage.accesstoken){
+        let ak = localStorage.accesstoken
+        this.$http.post(`https://cnodejs.org/api/v1/reply/${id}/ups`,qs.stringify({
+          accesstoken: ak
+        }))
+        .then(res=>{
+          if(res.data.action==='down'){
+            this.getArtical()
+            $(event.target).removeClass('active')
+          }else{
+            this.getArtical()
+            $(event.target).addClass('active')
+          }
+        })
+      }
     }
   },
   beforeMount() {
     this.isLoading = true
     this.getArtical()
-    console.log('-----6666')
-    console.log(this.post.replies)
   },
   watch:{
     '$route'(to,from){
@@ -200,7 +217,7 @@ a:visited {
   box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
 }
 .artical .replyTop {
-  font-size: 16px;
+  font-size: 15px;
   color: #333;
   padding: 16px 20px;
   background: #fff;
@@ -240,12 +257,19 @@ a:visited {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  color: #666;
+  color: #888;
 }
 .replyContent .up-btn {
   font-size: 14px;
   color: #000;
   opacity: 0.4;
+  margin-right: 4px;
+}
+.replyContent .up-btn:hover{
+  opacity: 0.6;
+}
+.replyContent .up-btn.active{
+  opacity: 1;
 }
 .replyContent .replyTime {
   font-size: 11px;

@@ -134,7 +134,7 @@ export default {
   margin-bottom: 20px;
 }
 .UserInfo .head {
-  font-size: 16px;
+  font-size: 15px;
   color: #333;
   padding: 16px 20px;
   background: #fff;
