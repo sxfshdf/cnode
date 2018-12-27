@@ -120,9 +120,7 @@ export default {
         this.posts = [];
       }
       this.getData()
-      console.log(1)
       this.$refs.page.firstPage()
-      console.log(2)
     }
   }
 };

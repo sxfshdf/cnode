@@ -95,7 +95,7 @@ export default {
   },
   beforeMount() {
     this.isLoading = true;
-    this.getUserInfo();
+    this.getUserInfo()
   },
   computed: {
     recentReplies(){

@@ -61,11 +61,9 @@ export default {
       this.$emit('change',this.currentPage)
     },
     firstPage(){
-      console.log(3)
-      this.pageBtns = [1,2,3,4,5,'...']
+      this.pageBtns = [1,2,3,4,5]
       this.changeBtn(1)
       this.$emit('change',this.currentPage)
-      console.log(4)
     }
   }
 }

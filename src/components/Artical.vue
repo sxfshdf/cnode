@@ -94,13 +94,17 @@ export default {
           if (response.data.success === true) {
             this.isLoading = false;
             this.post = response.data.data;
+            console.log('-----333')
+            console.log(this.post.replies.length)
           }
         });
     }
   },
   beforeMount() {
-    this.isLoading = true;
-    this.getArtical();
+    this.isLoading = true
+    this.getArtical()
+    console.log('-----6666')
+    console.log(this.post.replies)
   },
   watch:{
     '$route'(to,from){

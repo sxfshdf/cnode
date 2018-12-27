@@ -4,6 +4,7 @@ import Artical from '../components/Artical'
 import PostList from '../components/PostList'
 import UserInfo from '../components/UserInfo'
 import SideBar from '../components/SideBar'
+import Signin from '../components/Signin'
 
 Vue.use(Router)
 
@@ -33,6 +34,12 @@ export default new Router({
     components: {
       main: UserInfo,
       sidebar: SideBar
+    }
+  },{
+    name: 'signin',
+    path: '/signin',
+    components: {
+      main: Signin,
     }
   }]
 })

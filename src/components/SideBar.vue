@@ -78,9 +78,7 @@ export default {
       this.$http
         .get(`https://cnodejs.org/api/v1/user/${this.$route.params.name}`)
         .then(res => {
-          this.userInfo = res.data.data;
-          console.log("------------");
-          console.log(this.userInfo);
+          this.userInfo = res.data.data
         });
     }
   },
