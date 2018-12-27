@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div class="replies">
+    <div v-if="showTopic" class="topics">
       <div class="head">作者最近主题</div>
       <ul>
         <li v-for="(item,key) in topicItems" :key="key">
@@ -44,7 +44,7 @@
         </li>
       </ul>
     </div>
-    <div class="topics">
+    <div v-if="showReply" class="replies">
       <div class="head">作者最近回复</div>
       <ul>
         <li v-for="(item,key) in replyItems" :key="key">
@@ -94,6 +94,20 @@ export default {
       if (this.userInfo.recent_replies) {
         return this.userInfo.recent_replies.slice(0, 5);
       }
+    },
+    showTopic(){
+      if (this.userInfo.recent_topics && this.userInfo.recent_topics.length>0) {
+        return true
+      }else{
+        return false
+      }
+    },
+    showReply(){
+      if (this.userInfo.recent_replies && this.userInfo.recent_replies.length>0){
+        return true
+      }else{
+        return false
+      }
     }
   },
   beforeMount() {
@@ -119,15 +133,17 @@ export default {
   margin-bottom: 20px;
 }
 .SideBar .head {
-  font-size: 14px;
-  color: #80bd01;
+  font-size: 16px;
+  color: #333;
   padding: 16px 20px;
-  background: #fbfbfb;
+  background: #fff;
+  font-weight: 700;
+  border-bottom: 1px solid #ddd;
 }
 .SideBar img {
   width: 48px;
   height: 48px;
-  border-radius: 2px;
+  border-radius: 50%;
 }
 .SideBar li {
   padding: 10px 20px 10px 20px;
@@ -161,5 +177,12 @@ export default {
   font-size: 14px;
   color: #333;
   margin: 10px 0;
+}
+.SideBar a{
+  text-decoration: none;
+  color: #666;
+}
+.SideBar a:hover{
+  color: #333;
 }
 </style>

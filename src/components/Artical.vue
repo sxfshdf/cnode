@@ -13,7 +13,15 @@
           </li>
           <li>
             作者：
-            <span>{{post.author.loginname}}</span>
+            <router-link :to="{
+              name: 'user-info',
+              params: {
+                name: post.author.loginname
+              }
+            }">
+              <span>{{post.author.loginname}}</span>
+            </router-link>
+            
           </li>
           <li>
             <span>{{post.visit_count}}</span>&nbsp;次浏览
@@ -28,7 +36,7 @@
     </div>
 
     <div class="replyWrapper">
-      <div class="replyTop">回复</div>
+      <div class="replyTop"><span class="replyCount">{{post.replies.length}}</span> 条回复</div>
       <div>
         <div v-for="(reply, index) in post.replies" :key="index" class="replyContent">
           <div class="replyItem">
@@ -118,7 +126,7 @@ ul.articalInfo {
 }
 .articalWrapper .header {
   padding: 20px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #ddd;
 }
 .title {
   font-size: 22px;
@@ -188,10 +196,15 @@ a:visited {
   box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
 }
 .artical .replyTop {
-  font-size: 14px;
-  color: #80bd01;
+  font-size: 16px;
+  color: #333;
   padding: 16px 20px;
-  background: #fbfbfb;
+  background: #fff;
+  font-weight: 700;
+  border-bottom: 1px solid #ddd;
+}
+.artical .replyCount{
+  color: #80bd01;
 }
 
 .replyContent {
@@ -201,7 +214,8 @@ a:visited {
 .replyContent img.replyAvatar {
   width: 30px;
   height: 30px;
-  border-radius: 2px;
+  border-radius: 50%;
+
 }
 .replyContent .replyItem {
   display: flex;
@@ -209,11 +223,11 @@ a:visited {
 .replyContent .replyer {
   display: flex;
   flex-direction: column;
-  margin-left: 16px;
+  margin-left: 12px;
   width: 100%;
 }
 .replyContent .replyAuthor {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: #666;
 }

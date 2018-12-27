@@ -22,7 +22,15 @@
                 </router-link></span>
         </li>
         <li v-for="(post, key) in posts" :key="key">
-          <img :src="post.author.avatar_url">
+          <router-link :to="{
+            name: 'user-info',
+            params: {
+              name: post.author.loginname
+            }
+          }">
+            <img :src="post.author.avatar_url">
+          </router-link>
+          
           <span class="countWrapper">
             <span class="reply">{{post.reply_count}}</span>
             <span class="countSeperator">/</span>
@@ -131,34 +139,50 @@ li {
 ul.posts .tab span {
   padding: 4px 8px;
   border-radius: 2px;
-  margin-right: 10px;
-  font-size: 15px;
+  margin-right: 28px;
+  font-size: 16px;
   cursor: pointer;
   display: inline-block;
 }
+ul.posts .tab span:hover{
+  color: #80bd01;
+}
 ul.posts .tab span.currentTab {
-  background: #80bd01;
+  /* background: #80bd01; */
   color: #fff;
 }
-ul.posts .tab span.currentTab a{
-  color: #fff;
+
+ul.posts .tab span.currentTab{
+  color: #80bd01;
+  position: relative;
+  font-weight: 700;
+}
+ul.posts .tab span.currentTab::after{
+  content: '';
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background:  #80bd01;
+  top: 39px;
+  left: 0;
 }
 ul.posts .tab a:hover{
   text-decoration: none;
 }
 ul.posts .tab a:visited{
   text-decoration: none;
+  color: unset;
 }
 ul.posts .tab a{
   text-decoration: none;
-  color: #80bd01;
 }
 ul.posts {
   background: #fff;
   box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
 }
 ul.posts li:not(:first-child) {
-  padding: 10px 20px 10px 20px;
+  padding: 16px 20px 16px 20px;
   border-top: 1px solid #f0f0f0;
   display: flex;
   align-items: center;
@@ -170,17 +194,17 @@ ul.posts li:last-child:hover{
   background: #fff;
 }
 ul.posts li:first-child {
-  padding: 16px 20px 16px 20px;
-  background: #fbfbfb;
-  color: #80bd01;
+  padding: 16px 20px 12px 20px;
+  background: #fff;
+  color: #333;
 }
 img {
   width: 32px;
   height: 32px;
-  border-radius: 2px;
+  border-radius: 50%;
 }
 .countWrapper {
-  margin: 0 10px;
+  margin: 0 16px;
   width: 70px;
   text-align: center;
   font-size: 12px;
@@ -238,12 +262,9 @@ img {
 }
 a {
   text-decoration: none;
-  color: #08c;
+  color: #666;
 }
 a:hover {
-  text-decoration: underline;
-}
-a:visited {
-  color: #888;
+  color: #333;
 }
 </style>

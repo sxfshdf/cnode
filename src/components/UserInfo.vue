@@ -6,7 +6,7 @@
     <div v-else>
       <div class="userInformation">
         <section class="user">
-          <div class="head">主页</div>
+          <!-- <div class="head">主页</div> -->
           <div class="wrapper">
             <img :src="userInfo.avatar_url" alt class="userImg">
             <div class="infoWrapper">
@@ -19,7 +19,7 @@
         <div class="topics">
           <div class="head">最近创建的话题</div>
           <ul>
-            <li v-for="(item,key) in userInfo.recent_topics" :key="key">
+            <li v-for="(item,key) in this.recentTopics" :key="key">
               <router-link :to="{
                 name: 'user-info',
                 params: {
@@ -45,7 +45,7 @@
         <div class="replies">
           <div class="head">最近参与的话题</div>
           <ul>
-            <li v-for="(item,key) in userInfo.recent_replies" :key="key">
+            <li v-for="(item,key) in this.recentReplies" :key="key">
               <router-link :to="{
                 name: 'user-info',
                 params: {
@@ -96,6 +96,27 @@ export default {
   beforeMount() {
     this.isLoading = true;
     this.getUserInfo();
+  },
+  computed: {
+    recentReplies(){
+      if(this.userInfo.recent_replies){
+        return this.userInfo.recent_replies.splice(0,5)
+      }else{
+        return this.userInfo.recent_replies
+      }
+    },
+    recentTopics(){
+      if(this.userInfo.recent_topics){
+        return this.userInfo.recent_topics.splice(0,5)
+      }else{
+        return this.userInfo.recent_topics
+      }
+    },
+  },
+  watch:{
+    '$route'(to,from){
+      this.getUserInfo()
+    }
   }
 };
 </script>
@@ -113,10 +134,12 @@ export default {
   margin-bottom: 20px;
 }
 .UserInfo .head {
-  font-size: 14px;
-  color: #80bd01;
+  font-size: 16px;
+  color: #333;
   padding: 16px 20px;
-  background: #fbfbfb;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  font-weight: 700;
 }
 .UserInfo .wrapper {
   padding: 20px;
@@ -140,9 +163,9 @@ export default {
   color: #ababab;
 }
 .UserInfo .userImg {
-  height: 40px;
-  width: 40px;
-  border-radius: 2px;
+  height: 72px;
+  width: 72px;
+  border-radius: 50%;
 }
 .UserInfo .title {
   margin-left: 16px;
@@ -150,13 +173,16 @@ export default {
 .UserInfo img {
   width: 32px;
   height: 32px;
-  border-radius: 2px;
+  border-radius: 50%;
 }
 .UserInfo li {
   padding: 10px 20px 10px 20px;
   border-top: 1px solid #f0f0f0;
   display: flex;
   align-items: center;
+}
+.UserInfo li:hover{
+  background: #fbfbfb;
 }
 .UserInfo .time {
   flex: 1;
@@ -175,12 +201,9 @@ export default {
 }
 a {
   text-decoration: none;
-  color: #08c;
+  color: #666;
 }
 a:hover {
-  text-decoration: underline;
-}
-a:visited {
-  color: #888;
+  color: #333;
 }
 </style>
