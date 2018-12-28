@@ -70,7 +70,7 @@ export default {
   width: 100%;
 }
 .Signin .wrapper{
-  width: 50%;
+  min-width: 500px;
   margin: 20px auto;
   background: #fff;
   box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
