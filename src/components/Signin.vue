@@ -37,27 +37,29 @@ export default {
   },
   methods: {
     signIn(inputValue){
-      if(!inputValue.trim()){
-        return
+      if(inputValue.trim()){
+        this.$http.post('https://cnodejs.org/api/v1/accesstoken',qs.stringify({
+          accesstoken: this.inputValue
+        }))
+        .then((res)=>{
+          let userInfo = res.data
+          localStorage.userInfo = JSON.stringify(userInfo)
+          localStorage.accesstoken = inputValue
+          localStorage.showSignout = 'true'
+          localStorage.showSignin = 'false'
+          this.$store.commit('updateUserInfo', localStorage.userInfo)
+          this.$store.commit('updateAccessToken', localStorage.accesstoken)
+          this.$store.commit('Signin',false)
+          this.$store.commit('Signout',true)
+          $('p.toHome').click()
+        }).catch(err=>{
+          alert('AccessToken错误，请重新输入')
+          $('input').focus()
+        })
+      }else{
+        alert('请输入正确的 accesstoken')
       }
-      this.$http.post('https://cnodejs.org/api/v1/accesstoken',qs.stringify({
-        accesstoken: this.inputValue
-      }))
-      .then((res)=>{
-        let userInfo = res.data
-        localStorage.userInfo = JSON.stringify(userInfo)
-        localStorage.accesstoken = inputValue
-        localStorage.showSignout = 'true'
-        localStorage.showSignin = 'false'
-        this.$store.commit('updateUserInfo', localStorage.userInfo)
-        this.$store.commit('updateAccessToken', localStorage.accesstoken)
-        this.$store.commit('Signin',false)
-        this.$store.commit('Signout',true)
-        $('p.toHome').click()
-      }).catch(err=>{
-        alert('AccessToken错误，请重新输入')
-        $('input').focus()
-      })
+      
     }
   }
 }
