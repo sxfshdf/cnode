@@ -4,7 +4,7 @@
       <form>
           <label class="title" for="">验证登陆</label>
           <input type="text" placeholder="请输入accessToken" v-model="inputValue">
-          <button type="submit" @click="signIn(inputValue)">验&nbsp;&nbsp;&nbsp;&nbsp;证</button>
+          <button type="button" @click="signIn(inputValue)">验&nbsp;&nbsp;&nbsp;&nbsp;证</button>
       </form>
       <!-- <p v-if="false" class="wrongError">AccessToken错误，请重新输入</p> -->
       <router-link :to="{
@@ -39,7 +39,7 @@ export default {
     signIn(inputValue){
       if(inputValue.trim()){
         this.$http.post('https://cnodejs.org/api/v1/accesstoken',qs.stringify({
-          accesstoken: this.inputValue
+          accesstoken: this.inputValue.trim()
         }))
         .then((res)=>{
           let userInfo = res.data
