@@ -356,9 +356,6 @@ a {
 a:hover {
   text-decoration: underline;
 }
-a:visited {
-  color: #888;
-}
 .commentWrapper,
 .replyWrapper {
   margin-top: 20px;
