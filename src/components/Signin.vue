@@ -71,6 +71,7 @@ export default {
 }
 .Signin .wrapper{
   min-width: 500px;
+  max-width: 50%;
   margin: 20px auto;
   background: #fff;
   box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
