@@ -1,11 +1,11 @@
 <template>
   <div class="Signin">
     <div class="wrapper">
-      <form>
+      <div class="inputWrapper">
           <label class="title" for="">验证登陆</label>
           <input type="text" placeholder="请输入accessToken" v-model="inputValue">
           <button type="button" @click="signIn(inputValue)">验&nbsp;&nbsp;&nbsp;&nbsp;证</button>
-      </form>
+      </div>
       <!-- <p v-if="false" class="wrongError">AccessToken错误，请重新输入</p> -->
       <router-link :to="{
         name: 'root'
@@ -93,7 +93,7 @@ export default {
 .Signin input:focus{
   border: 1px solid #80bd01;
 }
-.Signin form{
+.Signin .inputWrapper{
   display: flex;
   flex-direction: column;
   align-items: center;
