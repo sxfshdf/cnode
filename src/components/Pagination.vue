@@ -59,6 +59,7 @@ export default {
         this.pageBtns.splice(5,1)
       }
       this.$emit('change',this.currentPage)
+      $('html, body').animate({scrollTop: 0},0)
     },
     firstPage(){
       this.pageBtns = [1,2,3,4,5]

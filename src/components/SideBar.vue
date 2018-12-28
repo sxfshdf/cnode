@@ -3,7 +3,7 @@
     <div class="author">
       <div class="head">作者</div>
       <div class="wrapper">
-        <router-link
+        <router-link v-if="userInfo.loginname"
           :to="{
                 name: 'user-info',
                 params: {
@@ -14,7 +14,7 @@
           <img :src="userInfo.avatar_url" class="userImg">
         </router-link>
         <div class="infoWrapper">
-          <router-link
+          <router-link v-if="userInfo.loginname"
             class="userName"
             :to="{
                 name: 'user-info',

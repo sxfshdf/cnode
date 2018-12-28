@@ -2,7 +2,7 @@
   <div class="postList">
     <!-- 数据未返回的时候显示 loading 动画 -->
     <div class="loading" v-if="isLoading">
-      <img src="#" alt>
+      <div class="lds-ripple"><div></div><div></div></div>
     </div>
     <!-- 列表数据 -->
     <div class="postWrapper" v-else>
@@ -21,8 +21,11 @@
                    {{tab.tabName}}
                 </router-link></span>
         </li>
+        <li class="liLoading" v-if="isChange">
+          <div class="lds-ripple"><div></div><div></div></div>
+        </li>
         <li v-for="(post, key) in posts" :key="key">
-          <router-link :to="{
+          <router-link v-if="post.author.loginname" :to="{
             name: 'user-info',
             params: {
               name: post.author.loginname
@@ -76,6 +79,7 @@ export default {
       posts: [],
       postPage: 1,
       currentTab: '全部',
+      isChange: false,
       tab: 'all',
       tabs: [{tabName:'全部',tab:'all'},
              {tabName:'精华',tab:'good'},
@@ -97,11 +101,15 @@ export default {
           }
         })
         .then(response => {
+          // debugger
           this.isLoading = false; // 加载成功之后去除loading
+          this.isChange = false
           this.posts = response.data.data;
         });
     },
     renderList(page){
+      
+      this.isChange = true
       this.postPage = page
       this.getData()
     },
@@ -110,8 +118,10 @@ export default {
     }
   },
   beforeMount() {
-    this.isLoading = true; // 加载成功之前加载loading
-    this.getData(); // 获取数据
+    this.isLoading = true // 加载成功之前加载loading
+    console.log(this.isLoading)
+    
+    this.getData()  // 获取数据
   },
   watch:{
     '$route'(to,from){
@@ -120,6 +130,7 @@ export default {
         this.posts = [];
       }
       this.getData()
+      this.isChange = true
       this.$refs.page.firstPage()
     }
   }
@@ -127,8 +138,59 @@ export default {
 </script>
 
 <style scoped>
+li.liLoading{
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  background: #fff;
+}
+
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #80bd01;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 28px;
+    left: 28px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: -1px;
+    left: -1px;
+    width: 58px;
+    height: 58px;
+    opacity: 0;
+  }
+}
+.loading{
+  flex: 1;
+  background: #fff;
+  box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
+  height: 600px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .postList {
   flex: 1;
+  width: 100%;
 }
 ul.posts,
 li {

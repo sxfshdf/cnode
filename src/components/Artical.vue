@@ -1,9 +1,12 @@
-<template>
+<template >
   <div class="artical">
     <div class="loading" v-if="isLoading">
-      <img src="#" alt>
+      <div class="lds-ripple"><div></div><div></div></div>
     </div>
     <div class="articalWrapper" v-else>
+      <div class="toTop" v-if="showUp" @click="toTop">
+        <i class="fas fa-arrow-up"></i>
+      </div>
       <div class="header">
         <div class="title">{{post.title}}</div>
         <ul class="articalInfo">
@@ -11,7 +14,7 @@
             发布于：
             <span>{{post.create_at | formatDate}}</span>
           </li>
-          <li>
+          <li v-if="post.author.loginname">
             作者：
             <router-link :to="{
               name: 'user-info',
@@ -35,11 +38,11 @@
       <div class="content" v-html="post.content"></div>
     </div>
 
-    <div class="replyWrapper">
-      <div class="replyTop"><span class="replyCount">{{post.replies.length}}</span> 条回复</div>
+    <div class="replyWrapper" >
+      <div class="replyTop"><span class="replyCount" v-if="post.replies">{{post.replies.length}}</span> 条回复</div>
       <div>
         <div v-for="(reply, index) in post.replies" :key="index" class="replyContent">
-          <div class="replyItem">
+          <div class="replyItem" v-if="reply.author.loginname">
             <router-link :to="{
               name: 'user-info',
               params: {
@@ -48,7 +51,7 @@
             }">
               <img :src="reply.author.avatar_url" alt class="replyAvatar">
             </router-link>
-            <div class="replyer">
+            <div class="replyer" v-if="reply.author.loginname">
               <router-link :to="{
                 name: 'user-info',
                 params: {
@@ -86,7 +89,7 @@ export default {
     return {
       isLoading: false,
       post: {} ,//当前文章页的所有内容
-      isActive: false
+      showUp: false
     };
   },
   components: {},
@@ -96,6 +99,7 @@ export default {
         .get(`https://cnodejs.org/api/v1/topic/${this.$route.params.id}`)
         .then(response => {
           if (response.data.success === true) {
+            // debugger
             this.isLoading = false;
             this.post = response.data.data
           }
@@ -111,20 +115,34 @@ export default {
           if(res.data.action==='down'){
             this.getArtical()
             $(event.target).removeClass('active')
+            
           }else{
             this.getArtical()
             $(event.target).addClass('active')
           }
         })
       }
+    },
+    handleScroll(){
+      if(window.scrollY > 400){
+        this.showUp = true
+      }else{
+        this.showUp = false
+      }
+    },
+    toTop(){
+      $('html, body').animate({scrollTop: 0},300)
     }
   },
   beforeMount() {
     this.isLoading = true
+    window.addEventListener('scroll', this.handleScroll)
     this.getArtical()
   },
   watch:{
     '$route'(to,from){
+      this.isLoading = true
+      $('html, body').animate({scrollTop: 0},300)
       this.getArtical()
     }
   }
@@ -133,6 +151,70 @@ export default {
 
 <style>
 @import url("../assets/markdown-github.css");
+
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #80bd01;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 28px;
+    left: 28px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: -1px;
+    left: -1px;
+    width: 58px;
+    height: 58px;
+    opacity: 0;
+  }
+}
+
+div.toTop{
+  position: fixed;
+  right: 20px;
+  height: 40px;
+  width: 40px;
+  background: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.3;
+  bottom: 40px;
+  cursor: pointer;
+}
+div.toTop:hover{
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+.loading{
+  flex: 1;
+  background: #fff;
+  box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
+  height: 600px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 ul.articalInfo {
   list-style: none;
   color: #333;

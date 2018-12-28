@@ -1,7 +1,7 @@
 <template>
   <div class="UserInfo">
     <div class="loading" v-if="isLoading">
-      <img src="#" alt>
+      <div class="lds-ripple"><div></div><div></div></div>
     </div>
     <div v-else>
       <div class="userInformation">

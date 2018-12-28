@@ -1,4 +1,4 @@
-<template>
+<template >
   <div class="header">
     <div class="wrapper">
       <router-link :to="{
@@ -10,15 +10,15 @@
         <li>
           <router-link :to="{
             name: 'root'
-          }">首页</router-link>
+          }"><i class="fas fa-home home"></i></router-link>
         </li>
         <li v-show="showSignin">
           <router-link :to="{
           name: 'signin'
-        }">登录</router-link>
+        }"><i class="fas fa-sign-in-alt in"></i></router-link>
         </li>
         <li class="user" v-if="showSignout">
-          <router-link
+          <router-link v-if="userInfo.loginname"
             :to="{
             name: 'user-info',
             params: {
@@ -28,7 +28,7 @@
           >
             <img :src="userInfo.avatar_url" class="userImg">
           </router-link>
-          <router-link
+          <router-link v-if="userInfo.loginname"
             :to="{
             name: 'user-info',
             params: {
@@ -40,7 +40,7 @@
           </router-link>
         </li>
         <li v-if="showSignout" @click="signout">
-          <a href="#">退出</a>
+          <i class="fas fa-sign-out-alt out"></i>
         </li>
       </ul>
     </div>
@@ -142,7 +142,27 @@ li {
   display: inline-block;
   color: #fff;
 }
+
 li a:hover {
+  color: #fff;
+}
+li a .in{
+  font-size: 18px;
+  margin-top: 4px;
+
+}
+li a .home{
+  font-size: 16px;
+  color: #ccc;
+}
+li .out{
+  font-size: 17px;
+    margin-top: 4px;
+    color: #ccc;
+}
+li a .in:hover,
+li a .home:hover,
+li .out:hover{
   color: #fff;
 }
 a {
