@@ -83,6 +83,14 @@
         </div>
       </div>
     </div>
+    <div class="commentWrapper" v-if="showComment">
+      <div class="commentTop">评论</div>
+      <div class="inputWrapper">
+        <textarea cols="30" rows="8" v-model="commentAll" placeholder="请输入评论内容"></textarea>
+        <button @click="sendCommentAll(post.id)">回 复</button>
+      </div>
+      
+    </div>
   </div>
 </template>
 
@@ -99,7 +107,8 @@ export default {
       showUp: false,
       showReplyInput: false,
       xxindex:-1,
-      comment:'我是评论'
+      comment:'我是评论',
+      commentAll: '',
     };
   },
   components: {},
@@ -158,11 +167,32 @@ export default {
       .then(res=>{
         this.xxindex = -1
         this.getArtical()
+      }).catch(err=>{
+        alert('请正确输入评论内容')
       })
-    }
+    },
+    sendCommentAll(topicId){
+      this.$http.post(`https://cnodejs.org/api/v1/topic/${topicId}/replies`,qs.stringify({
+        accesstoken: localStorage.accesstoken,
+        content: this.commentAll,
+      }))
+      .then(res=>{
+        this.commentAll = ''
+        this.getArtical()
+      }).catch(err=>{
+        alert('请正确输入评论内容')
+      })
+    },
   },
   computed: {
     showReplyBtn(){
+      if(localStorage.accesstoken){
+        return true
+      }else{
+        return false
+      }
+    },
+    showComment(){
       if(localStorage.accesstoken){
         return true
       }else{
@@ -259,6 +289,7 @@ ul.articalInfo {
   margin-right: 20px;
   flex: 1;
 }
+
 .articalWrapper {
   background: #fff;
   box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
@@ -328,12 +359,13 @@ a:hover {
 a:visited {
   color: #888;
 }
-
+.commentWrapper,
 .replyWrapper {
   margin-top: 20px;
   background: #fff;
   box-shadow: 0 0px 14px rgba(0, 0, 0, 0.06);
 }
+.commentWrapper .commentTop,
 .artical .replyTop {
   font-size: 15px;
   color: #333;
@@ -381,6 +413,7 @@ a:visited {
   display: flex;
   flex-direction: column;
 }
+.commentWrapper button,
 .replyContent .inputWrapper button{
   outline: none;
   height: 32px;
@@ -428,5 +461,22 @@ a:visited {
 }
 .replyContent .markdown-text p {
   margin: 10px 0;
+}
+
+.commentWrapper textarea{
+  width: 100%;
+  border: none;
+  resize: none;
+  outline: none;
+  padding: 20px;
+  font-size: 13px;
+  font: inherit;
+}
+.commentWrapper textarea:focus{
+  border: none;
+}
+.commentWrapper button{
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 </style>

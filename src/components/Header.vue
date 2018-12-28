@@ -85,6 +85,7 @@ export default {
       localStorage.removeItem('accesstoken')
       this.showSignout = this.toBool(localStorage.showSignout)
       this.showSignin = this.toBool(localStorage.showSignin)
+      location.reload()
     },
     toBool(string){
       if(string === 'true'){
