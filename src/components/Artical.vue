@@ -68,9 +68,16 @@
                 <span>
                   <i class='far fa-thumbs-up up-btn' @click="up(reply.id,$event)"></i>
                   {{reply.ups.length}}
+                  <i class="fas fa-reply reply" v-if="showReplyBtn" @click="showTextarea(index,reply.author.loginname)"></i>
                 </span>
+                
                 <!-- <span v-else></span> -->
               </div>
+              <div class="inputWrapper" v-if="xxindex === index?!showReplyInput:showReplyInput">
+                <textarea name="" :id=reply.id class="replyInput" cols="30" rows="6" v-model="comment"></textarea>
+                <button @click="sendComment(post.id,reply.id)">回 复</button>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -89,7 +96,10 @@ export default {
     return {
       isLoading: false,
       post: {} ,//当前文章页的所有内容
-      showUp: false
+      showUp: false,
+      showReplyInput: false,
+      xxindex:-1,
+      comment:'我是评论'
     };
   },
   components: {},
@@ -121,6 +131,8 @@ export default {
             $(event.target).addClass('active')
           }
         })
+      }else{
+        alert('登录之后才能点赞')
       }
     },
     handleScroll(){
@@ -132,6 +144,30 @@ export default {
     },
     toTop(){
       $('html, body').animate({scrollTop: 0},300)
+    },
+    showTextarea(index,name){
+      this.xxindex = index
+      this.comment = `@${name}:`
+    },
+    sendComment(topicId,replyId){
+      this.$http.post(`https://cnodejs.org/api/v1/topic/${topicId}/replies`,qs.stringify({
+        accesstoken: localStorage.accesstoken,
+        content: this.comment,
+        reply_id: replyId
+      }))
+      .then(res=>{
+        this.xxindex = -1
+        this.getArtical()
+      })
+    }
+  },
+  computed: {
+    showReplyBtn(){
+      if(localStorage.accesstoken){
+        return true
+      }else{
+        return false
+      }
     }
   },
   beforeMount() {
@@ -231,7 +267,7 @@ ul.articalInfo {
   padding: 20px;
   border-bottom: 1px solid #ddd;
 }
-.title {
+.artical .title {
   font-size: 22px;
   font-weight: 700;
   width: 75%;
@@ -341,12 +377,45 @@ a:visited {
   align-items: flex-end;
   color: #888;
 }
+.replyContent .inputWrapper{
+  display: flex;
+  flex-direction: column;
+}
+.replyContent .inputWrapper button{
+  outline: none;
+  height: 32px;
+  width: 72px;
+  background: #80bd01;
+  border: none;
+  color: #fff;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.replyContent .inputWrapper button:hover{
+  background: #80b90c;
+}
+.replyContent textarea.replyInput{
+  margin: 10px 0;
+  resize: none;
+  outline: none;
+  font-size: 13px;
+  font: inherit;
+  padding: 8px;
+}
+.replyContent textarea.replyInput:focus{
+  border: 1px solid #80bd01;
+}
+.replyContent .reply{
+  margin-left: 16px;
+}
+.replyContent .reply,
 .replyContent .up-btn {
   font-size: 14px;
   color: #000;
   opacity: 0.4;
   margin-right: 4px;
 }
+.replyContent .reply:hover,
 .replyContent .up-btn:hover{
   opacity: 0.6;
 }
