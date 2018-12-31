@@ -183,4 +183,13 @@ export default {
 .SideBar a:hover{
   color: #333;
 }
+
+/* ------------------------------------------- */
+
+@media screen and (max-width:420px) {
+  .SideBar {
+    display: none;
+    width: 290px;
+  } 
+}
 </style>

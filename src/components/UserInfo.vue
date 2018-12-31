@@ -138,7 +138,7 @@ export default {
   color: #333;
   padding: 16px 20px;
   background: #fff;
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
   font-weight: 700;
 }
 .UserInfo .wrapper {
@@ -205,5 +205,19 @@ a {
 }
 a:hover {
   color: #333;
+}
+
+/* ---------------------------------------------------- */
+@media screen and (max-width:420px) {
+.UserInfo{
+  margin-right: 0;
+}
+.UserInfo li:hover{
+  background: #fff;
+}
+a:hover {
+  color: #666;
+  text-decoration: none;
+}
 }
 </style>

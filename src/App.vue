@@ -27,4 +27,13 @@ export default {
   width: 90%;
   margin: 20px auto;
 }
+@media screen and (max-width:420px) {
+  #app .contentWrapper{
+  width: 100%;
+  /* margin: 20px auto; */
+  /* border: 2px solid green; */
+  margin: 0;
+  display: block;
+}
+}
 </style>

@@ -24,7 +24,7 @@
         <li class="liLoading" v-if="isChange">
           <div class="lds-ripple"><div></div><div></div></div>
         </li>
-        <li v-for="(post, key) in posts" :key="key">
+        <li v-for="(post, key) in posts" :key="key" v-if="!isChange">
           <router-link v-if="post.author.loginname" :to="{
             name: 'user-info',
             params: {
@@ -47,7 +47,7 @@
           >
             <span>{{post | formatTab}}</span>
           </span>
-          <router-link
+          <router-link class="postTitle"
             :to="{
             name: 'post-content',
             params: {
@@ -143,6 +143,7 @@ li.liLoading{
   display: flex;
   justify-content: center;
   background: #fff;
+  width: 100%;
 }
 
 .lds-ripple {
@@ -195,6 +196,7 @@ li.liLoading{
 ul.posts,
 li {
   list-style: none;
+  background: #fff;
 }
 ul.posts .tab span {
   padding: 4px 8px;
@@ -296,6 +298,7 @@ img {
   padding: 2px 4px;
   border-radius: 2px;
   margin-right: 10px;
+  white-space: nowrap;
 }
 .topicTab {
   font-size: 12px;
@@ -304,21 +307,29 @@ img {
   padding: 2px 4px;
   border-radius: 2px;
   margin-right: 10px;
+  white-space: nowrap;
+}
+.posts .postTitle{
+  width: 100%;
+  /* border: 1px solid red; */
 }
 .posts .title {
-  max-width: 70%;
+  max-width: 90%;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   font-size: 15px;
   font-weight: unset;
+  display: inline-block;
 }
 .time {
-  flex: 1;
-  text-align: right;
+  /* flex: 1; */
+  /* text-align: right; */
   display: inline-block;
   color: #778087;
   font-size: 11px;
+  margin-left: auto;
+  white-space: nowrap;
 }
 a {
   text-decoration: none;
@@ -326,5 +337,122 @@ a {
 }
 a:hover {
   color: #333;
+}
+
+@media screen and (max-width: 420px){
+  li.liLoading{
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    background: #fff;
+  }
+  .loading{
+    flex: 1;
+    background: #fff;
+    box-shadow: none;
+    height: 500px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .postList {
+    flex: 1;
+    width: 100%;
+  }
+  ul.posts,
+  li {
+    list-style: none;
+  }
+  ul.posts .tab span {
+    padding: 4px 8px;
+    border-radius: 2px;
+    margin-right: 16px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  ul.posts .tab span:hover{
+    color: #80bd01;
+  }
+  ul.posts .tab span.currentTab {
+    /* background: #80bd01; */
+    color: #fff;
+  }
+
+  ul.posts .tab span.currentTab{
+    color: #80bd01;
+    position: relative;
+    font-weight: 700;
+  }
+  ul.posts .tab span.currentTab::after{
+    content: '';
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background:  #80bd01;
+    top: 42px;
+    left: 0;
+  }
+  .countWrapper {
+    margin: 0 16px;
+    width: 70px;
+    text-align: center;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    display: none;
+  }
+  
+  .top,
+  .good {
+    font-size: 10px;
+    color: #fff;
+    background: #80bd01;
+    padding: 2px 4px;
+    border-radius: 2px;
+    margin-right: 10px;
+    white-space: nowrap;
+    margin-left: 10px;
+  }
+  .topicTab {
+    font-size: 10px;
+    color: #999;
+    background: #e5e5e5;
+    padding: 2px 4px;
+    border-radius: 2px;
+    margin-right: 10px;
+    white-space: nowrap;
+    margin-left: 10px;
+  }
+  .posts .postTitle{
+    width: 60%;
+    /* border: 1px solid red; */
+  }
+  .posts .title {
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: unset;
+    display: inline-block;
+  }
+  .time {
+    flex: 1;
+    text-align: right;
+    display: inline-block;
+    color: #999;
+    font-size: 11px;
+  }
+  a {
+    text-decoration: none;
+    color: #666;
+  }
+  a:hover {
+    color: #333;
+  }
 }
 </style>

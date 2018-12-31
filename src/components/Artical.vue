@@ -11,11 +11,11 @@
         <div class="title">{{post.title}}</div>
         <ul class="articalInfo">
           <li>
-            发布于：
+            发布于:
             <span>{{post.create_at | formatDate}}</span>
           </li>
           <li v-if="post.author.loginname">
-            作者：
+            作者:
             <router-link :to="{
               name: 'user-info',
               params: {
@@ -30,7 +30,7 @@
             <span>{{post.visit_count}}</span>&nbsp;次浏览
           </li>
           <li>
-            来自：
+            来自:
             <span>{{post | formatTab}}</span>
           </li>
         </ul>
@@ -431,6 +431,7 @@ a:hover {
   font-size: 13px;
   font: inherit;
   padding: 8px;
+  -webkit-appearance: none;
 }
 .replyContent textarea.replyInput:focus{
   border: 1px solid #80bd01;
@@ -475,5 +476,78 @@ a:hover {
 .commentWrapper button{
   margin-left: 20px;
   margin-bottom: 20px;
+}
+/* ---------------------------------------------------------------------------------------- */
+
+@media screen and (max-width:420px){
+
+div.toTop{
+  opacity: 0.3;
+  bottom: 20px;
+}
+div.toTop:hover{
+  opacity: 0.3;
+  transition: all 0.3s;
+}
+ul.articalInfo {
+  list-style: none;
+  color: #333;
+  white-space: nowrap;
+}
+.artical {
+  margin-right: 0;
+  flex: 1;
+}
+.artical .title {
+  font-size: 20px;
+  font-weight: 700;
+  width: 100%;
+}
+ul.articalInfo {
+  display: flex;
+  font-size: 11px;
+  margin-top: 12px;
+  color: #999;
+}
+ul.articalInfo li {
+  margin-right: 12px;
+}
+.artical .replyCount{
+  color: #80bd01;
+}
+.replyContent textarea.replyInput{
+  margin: 10px 0;
+  resize: none;
+  outline: none;
+  font-size: 13px;
+  font: inherit;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+.replyContent textarea.replyInput:focus{
+  border: 1px solid #80bd01;
+}
+.replyContent .reply{
+  margin-left: 16px;
+}
+.replyContent .reply,
+.replyContent .up-btn {
+  font-size: 14px;
+  color: #000;
+  opacity: 0.4;
+  margin-right: 4px;
+}
+.replyContent .reply:hover,
+.replyContent .up-btn:hover{
+  opacity: 0.4;
+}
+.replyContent .up-btn.active{
+  opacity: 1;
+}
+.replyContent .replyTime {
+  font-size: 11px;
+  color: #999;
+}
+
 }
 </style>

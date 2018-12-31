@@ -187,4 +187,16 @@ a {
   align-items: center;
   margin-top: 2px;
 }
+
+@media screen and (max-width:420px){
+  li a .in:hover,
+  li a .home:hover,
+  li .out:hover{
+    color: #ccc;
+  }
+  li a:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
 </style>

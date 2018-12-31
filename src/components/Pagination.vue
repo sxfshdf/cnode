@@ -99,6 +99,39 @@ export default {
 .Pagination .currentPage {
     color: white;
     background-color: #80bd01;
+    border: none;
+  }
 
+@media screen and (max-width: 420px) {
+  .Pagination {
+    margin: 14px 0;
+    font-size: 12px;
+    /* padding: 6px 0; */
+    /* border-radius: 5px; */
+    /*box-shadow: 0px 2px 9px #888888;*/
+    /* border: 1px solid #888888; */
+    display: flex;
+  }
+  .Pagination button{
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #778087;
+    border-radius: 3px;
+    outline: none;
+    height: 21px;
+    cursor: pointer;
+    padding: 0 2px;
+    width: 44px;
+    height: 28px;
+    margin: 0 2px;
+  }
+  .Pagination .pageBtn{
+    width: 28px;
+    height: 28px;
+  }
+  .Pagination .currentPage {
+    color: white;
+    background-color: #80bd01;
+    }
   }
 </style>
