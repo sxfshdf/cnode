@@ -1,21 +1,9 @@
-# cnode
+## 用vue脚手架搭建cnode社区
+使用cnode官网提供的api获取数据<br>
 
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+#### 主要页面
+1. 首页:不同区块切换/分页功能
+2. 详情页：底部回复/评论回复/点赞/侧边栏作者信息
+3. 用户主页
+4. 登录：需要用cnode 社区，在设置中获取到 accesstoken，再验证登录，登录后才可以进行评论
+5. loading动画
